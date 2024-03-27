@@ -15,7 +15,7 @@ fi
 for file in "$InputFolder"/*; do
     if [ -f "$file" ]; then
 		echo "executing $file ..."
-        phenix.geometry_minimization $file silent=True write_geo_file=False directory="$OutputFolder" selection=all max_reasonable_bond_distance=50.0
+        sh /home/xuyi/ATOMRefine/refine.sh $file 
 		echo "$file done"
     fi
 done

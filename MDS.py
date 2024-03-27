@@ -62,3 +62,17 @@ def MDS_Interpolation(InputFile1, InputFile2, ReferenceFile, OutputFile, num_fra
         new_content = ''.join(new_content)+original_content
         with open(OutputFile, 'w') as output_file:
             output_file.write(new_content)
+
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) != 6:
+        print("Usage: python MDS.py <InputFile1> <InputFile2> <ReferenceFile> <OutputFile> <frames>")
+        sys.exit(1)
+
+    infile1 = sys.argv[1]
+    infile2 = sys.argv[2]
+    ref_file = sys.argv[3]
+    outfile = sys.argv[4]
+    frames = int(sys.argv[5])
+
+    MDS_Interpolation(infile1, infile2, ref_file, outfile, frames)

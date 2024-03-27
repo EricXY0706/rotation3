@@ -70,8 +70,11 @@ def PDB_formation(InputFiles):
             new_content = ''.join(headers) + original_content
             with open(file_route, 'w') as output_file:
                 output_file.write(new_content)
-# input_files = [r'/home/xuyi/morphing/test_files/spliceosome_B_5zwo_A.pdb',
-#                r'/home/xuyi/morphing/test_files/spliceosome_Bact_5gm6_A.pdb',
-#                r'/home/xuyi/morphing/test_files/spliceosome_C_5gmk_A.pdb',
-#                r'/home/xuyi/morphing/test_files/spliceosome_P_5ylz.pdb']
-# PDB_formation(input_files)
+
+if __name__ == "__main__":
+    import sys
+    
+    input_files = []
+    for i in range(1, len(sys.argv)):
+        input_files.append(sys.argv[i])
+    PDB_formation(input_files)
