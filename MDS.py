@@ -37,7 +37,7 @@ def MDS_Interpolation(InputFile1, InputFile2, ReferenceFile, OutputFile, num_fra
         distance_matrix_k = distance_matrix_start + k * d
         matrix.append(distance_matrix_k)
     # MDS transformation
-    results = Parallel(n_jobs=-1)(delayed(compute_mds)(data, 3, 42, coordinates_start_standard) for data in tqdm(matrix))
+    results = Parallel(n_jobs=1)(delayed(compute_mds)(data, 3, 42, coordinates_start_standard) for data in tqdm(matrix))
     for k, coordinates_k in enumerate(results):
         # New model building
         new_model = Model.Model(k+1)
@@ -64,15 +64,20 @@ def MDS_Interpolation(InputFile1, InputFile2, ReferenceFile, OutputFile, num_fra
             output_file.write(new_content)
 
 if __name__ == "__main__":
-    import sys
-    if len(sys.argv) != 6:
-        print("Usage: python MDS.py <InputFile1> <InputFile2> <ReferenceFile> <OutputFile> <frames>")
-        sys.exit(1)
+    # import sys
+    # if len(sys.argv) != 6:
+    #     print("Usage: python MDS.py <InputFile1> <InputFile2> <ReferenceFile> <OutputFile> <frames>")
+    #     sys.exit(1)
 
-    infile1 = sys.argv[1]
-    infile2 = sys.argv[2]
-    ref_file = sys.argv[3]
-    outfile = sys.argv[4]
-    frames = int(sys.argv[5])
+    # infile1 = sys.argv[1]
+    # infile2 = sys.argv[2]
+    # ref_file = sys.argv[3]
+    # outfile = sys.argv[4]
+    # frames = int(sys.argv[5])
 
-    MDS_Interpolation(infile1, infile2, ref_file, outfile, frames)
+    # MDS_Interpolation(infile1, infile2, ref_file, outfile, frames)
+    MDS_Interpolation(r'/home/xuyi/morphing/codes/A.pdb',
+                      r'/home/xuyi/morphing/codes/B.pdb',
+                      r'/home/xuyi/morphing/codes/A.pdb',
+                      r'/home/xuyi/morphing/codes/A_B_40.pdb',
+                      40)

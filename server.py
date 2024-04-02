@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, send_file, redirect, url_for
 import paramiko
 
 app = Flask(__name__)
+app.static_folder = '/home/xuyi/morphing/codes/static'
 
 @app.route('/')
 def index():

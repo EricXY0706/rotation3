@@ -1,6 +1,6 @@
 #!/bin/bash
 
-InputFolder="/home/xuyi/morphing/5yh5_5yh8_20/4-Output-DeepRefine"
+InputFolder="/home/xuyi/morphing/sodium_Ca_only/3-OriginalMorophing-SplitModels"
 
 if [ ! -d "$InputFolder" ]; then
     echo "given directory not exist: $InputFolder"
@@ -12,7 +12,7 @@ for file in "$InputFolder"/*; do
 		if [[ $file == *.pdb ]]; then
 			filename=$(basename $file)
 			echo "executing $filename ..."
-			phenix.molprobity $file quiet=False max_reasonable_bond_distance=200.0 probe_dots=False coot=False prefix="$filename"
+			phenix.molprobity $file quiet=False max_reasonable_bond_distance=50.0 probe_dots=False coot=False prefix="$filename"
 			echo "$filename done"
 		fi
     fi

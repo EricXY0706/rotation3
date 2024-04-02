@@ -28,10 +28,11 @@ if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
 fi
 
 # Config
-pdb1="4eq7_copy"
-pdb2="4euo_copy"
+pdb1="B"
+pdb2="C"
+ref="A"
 type="intersection"
-frames=0
+frames=20
 workers=48
 total_num=$((frames+2))
 pdb_space_num=6
@@ -70,9 +71,13 @@ mv ${basicpath}/0-Input/"${pdb2}_union.pdb" ${basicpath}/1-IntersectionUnion/"${
 # Original Morphing
 InputFile1=${basicpath}/1-IntersectionUnion/"${pdb1}_${type}.pdb"
 InputFile2=${basicpath}/1-IntersectionUnion/"${pdb2}_${type}.pdb"
-ReferenceFile=${basicpath}/1-IntersectionUnion/"${pdb1}_${type}.pdb"
+# ReferenceFile=${basicpath}/1-IntersectionUnion/"${pdb1}_${type}.pdb"
+ReferenceFile=${basicpath}/1-IntersectionUnion/"${pdb1}.pdb"
 OutFile=${basicpath}/2-OriginalMorphing/"${pdb1}_${pdb2}_${type}_MDS_${frames}.pdb"
 python MDS.py $InputFile1 $InputFile2 $ReferenceFile $OutFile $frames
+while [ ! -f ${basicpath}/2-OriginalMorphing/"${pdb1}_${pdb2}_${type}_MDS_${frames}.pdb" ]; do
+	sleep 1
+done
 
 # SplitModels
 input_pdb=${basicpath}/2-OriginalMorphing/"${pdb1}_${pdb2}_${type}_MDS_${frames}.pdb"

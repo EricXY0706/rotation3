@@ -5,17 +5,19 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f7f7f7;
+            background-color: #ffffff;
             margin: 0;
             padding: 0;
         }
         .container {
+            position: relative;
             max-width: 600px;
             margin: 30px auto;
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
+            overflow: hidden;
         }
         h1 {
             color: #333;
@@ -62,6 +64,25 @@
             text-align: center;
             margin-top: 20px;
         }
+        .gif-container {
+            position: absolute;
+            top: 25%;
+            transform: translateY(-50%);
+            text-align: center;
+            width: 25%; /* 使用百分比 */
+        }
+        .gif-container img {
+            max-width: 100%; /* 设置图片最大宽度为100% */
+            height: auto;
+            display: block; /* 去除图片间隙 */
+            margin: 0 auto; /* 居中 */
+        }
+        .gif-container.left {
+            left: 0;
+        }
+        .gif-container.right {
+            right: 0;
+        }
     </style>
 </head>
 <body>
@@ -76,13 +97,19 @@
                 <label for="file2">File 2 (in PDB format):</label>
                 <input type="file" id="file2" name="file2" accept=".pdb">
             </div>
-			<div class="form-group">
-				<label for="quantity">Number of frames (1-100):</label>
-				<input type="number" id="quantity" name="quantity" min="1" max="100" value="10">
-			</div>			
+            <div class="form-group">
+                <label for="quantity">Number of frames (1-100):</label>
+                <input type="number" id="quantity" name="quantity" min="1" max="100" value="10">
+            </div>
             <input type="submit" value="Upload">
         </form>
         <div class="note">Calculations may take some time. Please be patient.</div>
+    </div>
+    <div class="gif-container left">
+        <img src="/static/movie_1.gif" alt="GIF A">
+    </div>
+    <div class="gif-container right">
+        <img src="/static/movie_2.gif" alt="GIF B">
     </div>
 </body>
 </html>
