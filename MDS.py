@@ -7,6 +7,8 @@ import warnings
 import os
 import numpy as np
 from joblib import Parallel, delayed
+from scipy.interpolate import RectBivariateSpline
+
 
 def compute_mds(data, n_components, random_state, corrd_init):
     warnings.filterwarnings('ignore')
@@ -25,7 +27,12 @@ def MDS_Interpolation(InputFile1, InputFile2, ReferenceFile, OutputFile, num_fra
     model_start, model_end = structure_start[0], structure_end[len(structure_end)-1]
     coordinates_start, coordinates_end = np.array([atom.get_coord().tolist() for atom in model_start.get_atoms()]), np.array([atom.get_coord().tolist() for atom in model_end.get_atoms()])
     distance_matrix_start, distance_matrix_end = squareform(pdist(coordinates_start)), squareform(pdist(coordinates_end))
-    d = (distance_matrix_end - distance_matrix_start) / (num_frames+1)
+    # Spline interpolation
+    spline_shape = distance_matrix_start.shape[0]
+    x = np.arange(spline_shape)
+    y = np.arange(spline_shape)
+    interp_func1 = RectBivariateSpline(x, y, distance_matrix_start, kx=3, ky=3)
+    interp_func2 = RectBivariateSpline(x, y, distance_matrix_end, kx=3, ky=3)
     # Model loading and initiation
     model = MDS(n_components=3, metric=True, random_state=42, dissimilarity="precomputed")
     coordinates_start_standard = model.fit_transform(distance_ref)
@@ -34,7 +41,8 @@ def MDS_Interpolation(InputFile1, InputFile2, ReferenceFile, OutputFile, num_fra
     # Interpolation
     matrix = []
     for k in tqdm(range(num_frames+2)):
-        distance_matrix_k = distance_matrix_start + k * d
+        t = k / (num_frames+2)
+        distance_matrix_k = (1 - t) * interp_func1(x, y) + t * interp_func2(x, y)
         matrix.append(distance_matrix_k)
     # MDS transformation
     results = Parallel(n_jobs=1)(delayed(compute_mds)(data, 3, 42, coordinates_start_standard) for data in tqdm(matrix))
